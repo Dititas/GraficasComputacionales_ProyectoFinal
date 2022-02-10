@@ -1,0 +1,102 @@
+////////////////////////////////////////////////////////////////////////////////
+// Filename: Agua.ps
+////////////////////////////////////////////////////////////////////////////////
+#version 400
+
+/////////////////////
+// INPUT VARIABLES //
+/////////////////////
+in vec2 texCoord;
+in vec3 normal;
+in vec3 tangente;
+in vec3 binormal;
+in vec3 posicion;
+in vec3 lightPosition;
+in vec3 NormLightDirection;
+in vec4 clipSpace;
+
+//////////////////////
+// OUTPUT VARIABLES //
+//////////////////////
+out vec4 outputColor;
+
+
+///////////////////////
+// UNIFORM VARIABLES //
+///////////////////////
+uniform sampler2D shaderTexture;
+uniform sampler2D shaderTextureN;
+uniform sampler2D shaderTextureSp;
+
+uniform vec4 diffuseLightColor;
+uniform float factAtDif;
+uniform float factAtAmb;
+uniform float factAtSpec;
+uniform float shininess;
+uniform float movimiento;
+
+uniform vec3 camaraDir;
+//uniform vec4 LuzEspecular;
+
+////////////////////////////////////////////////////////////////////////////////
+// Pixel Shader
+////////////////////////////////////////////////////////////////////////////////
+
+void main(void)
+{
+
+	vec4 textureColor;	
+	vec3 bump;
+	vec3 NewNormal;
+	
+	textureColor = texture(shaderTexture, 10.0*texCoord + movimiento); 
+
+	/////////////////////////////////////////////////////
+	//MAPA DE NORMALES
+	/////////////////////////////////////////////////////
+
+	bump = texture(shaderTextureN, texCoord).rgb; //obtener el mapa de normales
+	//el mapa de normales va de 0 a 1, o sea de 0 a 90 grados, debe pasar de -1 a 1 y -90 a 90 grados
+
+	bump = 2.0 * bump - vec3(1.0, 1.0, 1.0);
+	mat3 TBN = mat3(tangente, binormal, normal);	
+	NewNormal = normalize(TBN * bump);
+
+	/////////////////////////////////////////////////////
+	//APORTACIÓN AMBIENTAL
+	/////////////////////////////////////////////////////
+
+	vec4 LuzAmbiental = diffuseLightColor;
+	vec4 AportAmb = LuzAmbiental * factAtAmb;
+	
+	/////////////////////////////////////////////////////
+	//APORTACIÓN DIFUSA
+	/////////////////////////////////////////////////////
+
+	float factAtLambert = clamp(dot(NormLightDirection, NewNormal), 0.0, 1.0);
+	vec4 AportDif = diffuseLightColor * factAtDif * factAtLambert;
+
+	/////////////////////////////////////////////////////
+	//APORTACIÓN ESPECULAR
+	/////////////////////////////////////////////////////
+
+	vec3 viewDir = normalize(camaraDir - posicion);
+	vec3 reflectDir = normalize(reflect(NormLightDirection, NewNormal));
+
+	vec4 specmap = 1 - texture(shaderTextureSp, texCoord);
+
+	vec4 LuzEspecular = vec4 (1, 1, 1, 1);
+	float spec = pow(max(dot(-viewDir, reflectDir), 0.0), shininess);
+	vec4 AportEspec = specmap * LuzEspecular * factAtSpec * spec;
+
+	/////////////////////////////////////////////////////
+	//SALIDA DE COLOR
+	/////////////////////////////////////////////////////
+	
+
+	outputColor = textureColor * AportAmb;  //(AportAmb + AportDif + AportEspec); NO ME JALARON EL APORTDIF Y EL APORTESPEC :C
+	
+	//outputColor = vec4(0.0, 0.0, 1.0, 1.0);
+
+}
+
