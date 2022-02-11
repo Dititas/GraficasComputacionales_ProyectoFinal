@@ -235,7 +235,7 @@ bool GraphicsClass::Initialize(OpenGLClass* OpenGL, HWND hwnd)
 	//casaP3 = new Modelos(hwnd, m_OpenGL, "Base03.obj", L"baseC_color02.jpg", L"baseC_normal02.jpg", L"baseC_specular02.jpg,", 0.15, -64.0, 12.7, -113.0, 9);
 	//casaP4 = new Modelos(hwnd, m_OpenGL, "Base04.obj", L"baseC_color03.jpg", L"baseC_normal03.jpg", L"baseC_specular03.jpg,", 0.15, -64.0, 12.7, -113.0, 10);
 	//casaP5 = new Modelos(hwnd, m_OpenGL, "Base05.obj", L"baseC_color01.jpg", L"baseC_normal01.jpg", L"baseC_specular01.jpg,", 0.15, -64.0, 12.7, -113.0, 11);
-	mar = new Modelos(hwnd, m_OpenGL, "Mar.obj", L"water_color.jpg", L"water_normalB.jpg", L"water_specular.jpg,", 1, -12.0, 50, -137.0, 12);
+	mar = new Modelos(hwnd, m_OpenGL, "Mar.obj", L"water_color.jpg", L"water_normalB.jpg", L"water_specular.jpg,", 0.4f, -12.0f, 95.0f, -137.0f, 12.0f);
 
 	//m_ModeloShader = new LightShaderClass((char*)"Modelo.vs", (char*)"Modelo.ps");
 	m_AguaShader = new LightShaderClass((char*)"Agua.vs", (char*)"Agua.ps");
@@ -257,7 +257,7 @@ bool GraphicsClass::Initialize(OpenGLClass* OpenGL, HWND hwnd)
 
 		MessageBox(hwnd, (LPCSTR)"Could not initialize the light shader object.", (LPCSTR)"Error", MB_OK);
 		return false;
-	}
+	}*/
 
 	result = m_AguaShader->Initialize(m_OpenGL, hwnd);
 	if (!result)
@@ -265,7 +265,7 @@ bool GraphicsClass::Initialize(OpenGLClass* OpenGL, HWND hwnd)
 
 		MessageBox(hwnd, (LPCSTR)"Could not initialize the light shader object.", (LPCSTR)"Error", MB_OK);
 		return false;
-	}*/
+	}
 
 	return true;
 }
