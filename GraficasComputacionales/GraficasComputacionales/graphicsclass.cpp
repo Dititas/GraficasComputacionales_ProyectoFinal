@@ -129,7 +129,7 @@ bool GraphicsClass::Initialize(OpenGLClass* OpenGL, HWND hwnd)
 
 
 	terreno = new Terreno(hwnd, m_OpenGL, L"Heightmap.jpg", L"Grass_Diffuse.jpg", L"Grass_Normal.jpg", L"Concrete_Diffuse.jpg", L"Concrete_Normal.jpg", L"Channel_R.png",
-		(float)500, (float)600, 0, 1, 3, 4, 24, 25);
+		(float)1000, (float)1000, 0, 1, 3, 4, 24, 25);
 
 	// Create the light shader object.
 	m_LightShader = new LightShaderClass((char*)"light.vs", (char*)"light.ps");
@@ -368,7 +368,8 @@ bool GraphicsClass::Render(float rotation)
 
 	// Generate the view matrix based on the camera's position.
 	m_Camera->SetRotation(angx, angy, angz);
-	//m_Camera->SetYPos(terreno->Superficie(m_Camera->GetXPos(), m_Camera->GetZPos()) + 3);
+	m_Camera->SetYPos(terreno->Superficie(m_Camera->GetXPos(), m_Camera->GetZPos()) + 6);
+
 	if (tercera)
 	{
 		/*m_Camera->SetYPos(15.5);*/
