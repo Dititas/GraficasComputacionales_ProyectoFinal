@@ -124,8 +124,6 @@ bool GraphicsClass::Initialize(OpenGLClass* OpenGL, HWND hwnd)
 		return false;
 	}
 
-	// Set the initial position of the camera.
-	m_Camera->SetPosition(-12.0f, 130.0f, -137.0f);
 
 
 	terreno = new Terreno(hwnd, m_OpenGL, L"Heightmap.jpg", L"Grass_Diffuse.jpg", L"Grass_Normal.jpg", L"Concrete_Diffuse.jpg", L"Concrete_Normal.jpg", L"Channel_R.png",
@@ -156,6 +154,10 @@ bool GraphicsClass::Initialize(OpenGLClass* OpenGL, HWND hwnd)
 	// Initialize the light object.
 	m_Light->SetDiffuseColor(1.0f, 0.85f, 0.66f, 1.0f);
 	m_Light->SetDirection(-1.0f, 1.5f, -1.0f);
+
+	// Set the initial position of the camera.
+	m_Camera->SetPosition(0.0f, terreno->Superficie(m_Camera->GetXPos(), m_Camera->GetZPos()) + 6, 430.0f);
+
 
 	//sky = new SkyDome(hwnd, m_OpenGL, 32, 32, 400, L"sky.jpg");
 	//// Create the light shader object.
@@ -235,7 +237,7 @@ bool GraphicsClass::Initialize(OpenGLClass* OpenGL, HWND hwnd)
 	//casaP3 = new Modelos(hwnd, m_OpenGL, "Base03.obj", L"baseC_color02.jpg", L"baseC_normal02.jpg", L"baseC_specular02.jpg,", 0.15, -64.0, 12.7, -113.0, 9);
 	//casaP4 = new Modelos(hwnd, m_OpenGL, "Base04.obj", L"baseC_color03.jpg", L"baseC_normal03.jpg", L"baseC_specular03.jpg,", 0.15, -64.0, 12.7, -113.0, 10);
 	//casaP5 = new Modelos(hwnd, m_OpenGL, "Base05.obj", L"baseC_color01.jpg", L"baseC_normal01.jpg", L"baseC_specular01.jpg,", 0.15, -64.0, 12.7, -113.0, 11);
-	mar = new Modelos(hwnd, m_OpenGL, "Mar.obj", L"water_color.jpg", L"water_normalB.jpg", L"water_specular.jpg,", 0.4f, -12.0f, 95.0f, -137.0f, 12.0f);
+	mar = new Modelos(hwnd, m_OpenGL, "Mar.obj", L"water_color.jpg", L"water_normalB.png", L"water_specular.png,", 0.4f, -12.0f, 95.0f, -137.0f, 12.0f);
 
 	//m_ModeloShader = new LightShaderClass((char*)"Modelo.vs", (char*)"Modelo.ps");
 	m_AguaShader = new LightShaderClass((char*)"Agua.vs", (char*)"Agua.ps");
